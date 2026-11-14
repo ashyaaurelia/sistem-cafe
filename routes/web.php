@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\BahanController;
 
 // halaman utama
 Route::get('/', function () {
@@ -40,3 +41,15 @@ Route::get('/manajer/menu/{id}/edit', [MenuController::class, 'edit']);
 Route::put('/manajer/menu/{id}', [MenuController::class, 'update']);
 
 Route::delete('/manajer/menu/{id}', [MenuController::class, 'destroy']);
+
+Route::get('/manajer/bahan', [BahanController::class, 'index']);
+
+Route::get('/manajer/bahan/tambah', [BahanController::class, 'create']);
+
+Route::post('/manajer/bahan', [BahanController::class, 'store']);
+
+Route::get('manajer/bahan/{id}/edit', [BahanController::class, 'edit']);
+
+Route::put('/manajer/bahan/{id}', [BahanController::class, 'update']);
+
+Route::delete('/manajer/bahan/{id}', [BahanController::class, destroy]);

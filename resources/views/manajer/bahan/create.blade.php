@@ -1,0 +1,46 @@
+@extends('layouts.app')
+
+@section('content')
+
+<h1>Tambah Bahan</h1>
+
+<form action="/manajer/bahan" method="POST">
+    @csrf
+
+    <label>Nama Bahan</label>
+    <br>
+    <input type="text" name="nama" required>
+
+    <br><br>
+
+    <label>Stok</label>
+    <br>
+    <input type="number" name="stok" required>
+
+    <br><br>
+
+    <label>Satuan</label>
+    <br>
+    <select name="satuan">
+        <option value="gram">Gram</option>
+        <option value="value">ML</option>
+        <option value="pcs">PCS</option>
+    </select>
+
+    <br><br>
+
+    <label>Stok Minimum</label>
+    <br>
+    <input type="number" name="stok_minimum" required>
+
+    <br><br>
+
+    <button type="submit">Simpan</button>
+
+</form>
+
+<br>
+
+<a href="/manajer/bahan">Kembali</a>
+
+@endsection
