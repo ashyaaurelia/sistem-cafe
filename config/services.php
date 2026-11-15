@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'ukk_api' => [
+        'url' => env('UKK_API_URL'),
+        'key' => env('UKK_API_KEY'),
+    ],
 ];

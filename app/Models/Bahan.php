@@ -12,4 +12,9 @@ class Bahan extends Model
         'satuan',
         'stok_minimum',
     ];
+
+    public function reseps()
+    {
+        return $this->hasMany(Resep::class);
+    }
 }

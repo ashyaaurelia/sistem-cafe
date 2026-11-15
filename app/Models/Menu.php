@@ -11,4 +11,9 @@ class Menu extends Model
         'harga',
         'kategori',
     ];
+
+    public function reseps()
+    {
+        return $this->hasMany(Resep::class);
+    }
 }

@@ -88,7 +88,7 @@
     <div class="sidebar">
         <a href="/manajer/dashboard">Dashboard</a>
         <a href="/manajer/menu">Menu</a>
-        <a href="#">Resep</a>
+        <a href="/manajer/resep">Resep</a>
         <a href="/manajer/bahan">Bahan</a>
         <a href="#">Stok Masuk</a>
         <a href="#">Import CSV</a>

@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\BahanController;
+use App\Services\HargaBahanService;
+use App\Http\Controllers\ResepController;
 
 // halaman utama
 Route::get('/', function () {
@@ -52,4 +54,12 @@ Route::get('manajer/bahan/{id}/edit', [BahanController::class, 'edit']);
 
 Route::put('/manajer/bahan/{id}', [BahanController::class, 'update']);
 
-Route::delete('/manajer/bahan/{id}', [BahanController::class, destroy]);
+Route::delete('/manajer/bahan/{id}', [BahanController::class, 'destroy']);
+
+Route::get('/manajer/resep', [ResepController::class, 'index']);
+
+Route::get('/manajer/resep/{menu_id}/create', [ResepController::class, 'create']);
+
+Route::post('/manajer/resep', [ResepController::class, 'store']);
+
+Route::delete('manajer/resep/{id}', [ResepController::class, 'destroy']);
