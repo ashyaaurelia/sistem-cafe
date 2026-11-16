@@ -10,7 +10,16 @@ class MenuController extends Controller
     // menampilkan semua menu
     public function index()
     {
-        $menus = Menu::all();
+        $menus = Menu::with('reseps.bahan')->get();
+
+        foreach ($menus as $menu){
+            $menu->hpp = 0;
+
+            foreach ($menu->reseps as $resep){
+                $menu->hpp += $resep->jumlah * $resep->bahan->harga;
+            }
+            $menu->margin = $menu->harga - $menu->hpp;
+        }
 
         return view('manajer.menu.index', compact('menus'));
     }

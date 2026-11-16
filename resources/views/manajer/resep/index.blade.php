@@ -8,6 +8,10 @@
 
 <h3>{{ $menu->nama }}</h3>
 
+<p>
+    <strong>HPP: Rp {{ number_format($menu->hpp, 0, ',', '.') }}</strong>
+</p>
+
 <a href="/manajer/resep/{{ $menu->id }}/create">
     <button>Tambah Resep</button>
 </a>

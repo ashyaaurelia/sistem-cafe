@@ -19,6 +19,11 @@
 
     <br><br>
 
+    <label>Harga</label><br>
+    <input type="number" name="harga" min="0">
+
+    <br><br>
+
     <label>Satuan</label>
     <br>
     <select name="satuan">

@@ -20,6 +20,11 @@
 
     <br><br>
 
+    <label>Harga</label><br>
+    <input type="number" name="harga" min="0" value="{{ $bahan->harga }}">
+
+    <br><br>
+
     <label>Satuan</label>
     <br>
     <select name="satuan">

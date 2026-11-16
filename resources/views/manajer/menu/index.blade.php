@@ -17,6 +17,8 @@
         <th>Nama Menu</th>
         <th>Harga</th>
         <th>Kategori</th>
+        <th>HPP</th>
+        <th>Margin</th>
         <th>Aksi</th>
     </tr>
 
@@ -24,8 +26,10 @@
     <tr>
         <td>{{ $loop->iteration }}</td>
         <td>{{ $menu->nama }}</td>
-        <td>{{ number_format($menu->harga) }}</td>
+        <td>Rp {{ number_format($menu->harga, 0, ',', '.') }}</td>
         <td>{{ $menu->kategori }}</td>
+        <td>Rp {{ number_format($menu->hpp, 0, ',', '.') }}</td>
+        <td>Rp {{ number_format($menu->margin, 0, ',', '.') }}</td>
 
         <td>
             <a href="/manajer/menu/{{ $menu->id }}/edit">

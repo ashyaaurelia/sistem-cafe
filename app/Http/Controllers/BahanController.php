@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bahan;
 use Illuminate\Http\Request;
+use App\Services\UkkApiServices;
 
 class BahanController extends Controller
 {
@@ -28,6 +29,7 @@ class BahanController extends Controller
             'stok' => $request->stok,
             'satuan' => $request->satuan,
             'stok_minimum' => $request->stok_minimum,
+            'harga' => $request->harga,
         ]);
         return redirect('/manajer/bahan');
     }
@@ -49,6 +51,7 @@ class BahanController extends Controller
             'stok' => $request->stok,
             'satuan' => $request->satuan,
             'stok_minimum' => $request->stok_minimum,
+            'harga' => $request->harga,
         ]);
 
         return redirect('/manajer/bahan');
@@ -60,5 +63,29 @@ class BahanController extends Controller
         $bahan = Bahan::findOrFail($id);
         $bahan->delete();
         return redirect('/manajer/bahan');
+    }
+
+    public function sinkronisasi(UkkApiServices $api)
+    {
+        $hasil = $api->getHargaBahan();
+
+        if (!$hasil || !isset($hasil['data'])){
+            return redirect('/manajer/bahan')->with('error', 'Supplier API tidak tersedia. Sistem tetap menggunakan harga terakhir yang tersimpan.');
+        }
+
+        foreach ($hasil['data'] as $item){
+            Bahan::updateOrCreate(
+                ['kode' => $item['kode']],
+                [
+                    'nama' => $item['nama'],
+                    'stok' => 0,
+                    'satuan' => $item['satuan_dasar'],
+                    'stok_minimum' => 0,
+                    'harga' => $item['harga_per_satuan'],
+                    'harga_diperbarui_pada' => $hasil['diperbarui'],
+                ]
+            );
+        }
+        return redirect('/manajer/bahan')->with('success', 'Harga bahan berhasil disinkronsasi');
     }
 }

@@ -16,7 +16,14 @@ class ResepController extends Controller
     {
         $menus = Menu::with('reseps.bahan')->get();
 
-        return view('manajer.resep.index', compact('menus'));
+        foreach ($menus as $menu){
+            $menu->hpp = 0;
+
+            foreach ($menu->reseps as $resep){
+                $menu->hpp += $resep->jumlah * $resep->bahan->harga;
+            }
+        }
+        return view ('manajer.resep.index', compact('menus'));
     }
 
     /**
