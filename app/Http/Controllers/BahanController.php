@@ -74,17 +74,19 @@ class BahanController extends Controller
         }
 
         foreach ($hasil['data'] as $item){
-            Bahan::updateOrCreate(
-                ['kode' => $item['kode']],
-                [
-                    'nama' => $item['nama'],
-                    'stok' => 0,
-                    'satuan' => $item['satuan_dasar'],
-                    'stok_minimum' => 0,
-                    'harga' => $item['harga_per_satuan'],
-                    'harga_diperbarui_pada' => $hasil['diperbarui'],
-                ]
-            );
+            $bahan = Bahan::firstOrNew(
+                ['kode' => $item['kode']]);
+                
+                $bahan->nama = $item['nama'];
+                $bahan->satuan = $item['satuan_dasar'];
+                $bahan->harga = $item['harga_per_satuan'];
+                $bahan->harga_diperbarui_pada = $hasil['diperbarui'];
+
+                if (!$bahan->exists){
+                    $bahan->stok = 0;
+                    $bahan->stok_minimum = 0;
+                }
+                $bahan->save();
         }
         return redirect('/manajer/bahan')->with('success', 'Harga bahan berhasil disinkronsasi');
     }
