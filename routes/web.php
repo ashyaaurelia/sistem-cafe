@@ -65,3 +65,5 @@ Route::post('/manajer/resep', [ResepController::class, 'store']);
 Route::delete('manajer/resep/{id}', [ResepController::class, 'destroy']);
 
 Route::post('/manajer/bahan/sinkronisasi', [BahanController::class, 'sinkronisasi']);
+
+Route::post('/manajer/bahan/import', [BahanController::class, 'import']);

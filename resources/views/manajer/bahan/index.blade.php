@@ -13,6 +13,15 @@
     <button type="submit">Sinkronisasi Harga Supplier</button>
 </form>
 
+<form action="/manajer/bahan/import" method="POST" enctype="multipart/form-data">
+    @csrf
+
+    <label>Import Data Bahan (CSV):</label>
+    <input type="file" name="file" accept=".csv" required>
+
+    <button type="submit">Import CSV</button>
+</form>
+
 <br><br>
 
 @if(session('success'))

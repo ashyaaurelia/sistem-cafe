@@ -65,6 +65,68 @@ class BahanController extends Controller
         return redirect('/manajer/bahan');
     }
 
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt|max:2048',
+        ]);
+
+        $file = fopen($request->file('file')->getRealPath(), 'r');
+        $header = fgetcsv($file);
+
+        $berhasil = 0;
+        $dilewati = 0;
+
+        while (($data = fgetcsv($file)) !== false){
+            if (count($data) < 5){
+                $dilewati++;
+                continue;
+            }
+
+            $kode = trim($data[0]);
+            $nama = trim($data[1]);
+            $stokRaw = trim($data[2]);
+            $satuan = strtolower(trim($data[3]));
+
+            if (!$kode || !$nama || !is_numeric($stokRaw) || $stokRaw < 0){
+                $dilewati++;
+                continue;
+            }
+            $stok = (float) $stokRaw;
+
+            if ($satuan == 'kg'){
+                $stok = $stok * 1000;
+                $satuan = 'g';
+            } elseif ($satuan == 'liter'){
+                $stok = $stok * 1000;
+                $satuan = 'ml';
+            }
+
+            if (!in_array($satuan, ['g', 'ml', 'pcs'])){
+                $dilewati++;
+                continue;
+            }
+
+            $bahan = Bahan::where('kode', $kode)->first();
+
+            if(!$bahan){
+                $dilewati++;
+                continue;
+            }
+
+            $bahan->stok = $stok;
+            $bahan->satuan = $satuan;
+            $bahan->save();
+
+            $berhasil++;
+        }
+
+        fclose($file);
+        return redirect('/manajer/bahan')->with(
+            'success', "Import selesai. Berhasil: $berhasil bahan. Dilewati: $dilewati data."
+        );
+    }
+
     public function sinkronisasi(UkkApiServices $api)
     {
         $hasil = $api->getHargaBahan();
