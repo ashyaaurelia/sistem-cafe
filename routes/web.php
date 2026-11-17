@@ -6,6 +6,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\BahanController;
 use App\Services\HargaBahanService;
 use App\Http\Controllers\ResepController;
+use App\Http\Controllers\StokMasukController;
 
 // halaman utama
 Route::get('/', function () {
@@ -67,3 +68,9 @@ Route::delete('manajer/resep/{id}', [ResepController::class, 'destroy']);
 Route::post('/manajer/bahan/sinkronisasi', [BahanController::class, 'sinkronisasi']);
 
 Route::post('/manajer/bahan/import', [BahanController::class, 'import']);
+
+Route::get('/manajer/stok-masuk', [StokMasukController::class, 'index']);
+
+Route::post('/manajer/stok-masuk', [StokMasukController::class, 'simpan']);
+
+Route::get('/manajer/laporan/stok-masuk', [StokMasukController::class, 'laporan']);

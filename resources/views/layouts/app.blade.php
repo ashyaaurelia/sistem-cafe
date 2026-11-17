@@ -90,10 +90,8 @@
         <a href="/manajer/menu">Menu</a>
         <a href="/manajer/resep">Resep</a>
         <a href="/manajer/bahan">Bahan</a>
-        <a href="#">Stok Masuk</a>
-        <a href="#">Import CSV</a>
-        <a href="#">Supplier</a>
-        <a href="#">Laporan</a>
+        <a href="/manajer/stok-masuk">Stok Masuk</a>
+        <a href="/manajer/laporan/stok-masuk">Laporan</a>
     </div>
 
     <div class="content">

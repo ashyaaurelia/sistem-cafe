@@ -10,7 +10,7 @@
 
 <form action="/manajer/bahan/sinkronisasi" method="POST" style="display: inline;">
     @csrf
-    <button type="submit">Sinkronisasi Harga Supplier</button>
+    <button type="submit">Update Harga Bahan</button>
 </form>
 
 <form action="/manajer/bahan/import" method="POST" enctype="multipart/form-data">
