@@ -25,7 +25,25 @@ Route::post ('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //dashboard manajer
 Route::get('/manajer/dashboard', function () {
-    return view('manajer.dashboard');
+    $totalMenu = \App\Models\Menu::count();
+    $totalBahan = \App\Models\Bahan::count();
+    $stokMasukHariIni = \App\Models\StokMasuk::whereDate(
+        'tanggal',
+        today()
+    )->count();
+
+    $stokMasuks = \App\Models\StokMasuk::with('bahan')
+        ->orderBy('tanggal', 'desc')
+        ->orderBy('id', 'desc')
+        ->take(5)
+        ->get();
+
+    return view('manajer.dashboard', compact(
+        'totalMenu',
+        'totalBahan',
+        'stokMasukHariIni',
+        'stokMasuks'
+    ));
 });
 
 //dashboard kasir
@@ -42,6 +60,8 @@ Route::post('/manajer/menu', [MenuController::class, 'store']);
 Route::get('/manajer/menu/{id}/edit', [MenuController::class, 'edit']);
 
 Route::put('/manajer/menu/{id}', [MenuController::class, 'update']);
+
+Route::put('/manajer/menu/{id}/status', [MenuController::class, 'ubahStatus']);
 
 Route::delete('/manajer/menu/{id}', [MenuController::class, 'destroy']);
 

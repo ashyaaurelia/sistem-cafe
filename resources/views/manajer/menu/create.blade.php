@@ -29,6 +29,15 @@
 
     <br><br>
 
+    <div class="mb-3">
+        <label>Status Menu</label>
+
+        <select name="status" class="form-control" required>
+            <option value="aktif">Aktif</option>
+            <option value="nonaktif">Nonaktif</option>
+        </select>
+    </div>
+
     <button type="submit">Simpan</button>
 
 </form>

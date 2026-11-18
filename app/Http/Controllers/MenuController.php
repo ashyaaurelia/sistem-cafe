@@ -37,6 +37,7 @@ class MenuController extends Controller
             'nama' => $request->nama,
             'harga' => $request->harga,
             'kategori' => $request->kategori,
+            'status' => $request->status,
         ]);
 
         return redirect('/manajer/menu');
@@ -59,6 +60,20 @@ class MenuController extends Controller
             'kategori' => $request->kategori,
         ]);
 
+        return redirect('/manajer/menu');
+    }
+
+    public function ubahStatus($id)
+    {
+        $menu = Menu::findOrFail($id);
+
+        if($menu->status == 'aktif'){
+            $menu->status = 'nonaktif';
+        } else {
+            $menu->status = 'aktif';
+        }
+
+        $menu->save();
         return redirect('/manajer/menu');
     }
 

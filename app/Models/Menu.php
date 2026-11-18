@@ -11,6 +11,7 @@ class Menu extends Model
         'nama',
         'harga',
         'kategori',
+        'status',
     ];
 
     public function reseps()

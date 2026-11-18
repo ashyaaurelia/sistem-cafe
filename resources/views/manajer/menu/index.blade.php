@@ -19,6 +19,7 @@
         <th>Kategori</th>
         <th>HPP</th>
         <th>Margin</th>
+        <th>Status</th>
         <th>Aksi</th>
     </tr>
 
@@ -30,8 +31,23 @@
         <td>{{ $menu->kategori }}</td>
         <td>Rp {{ number_format($menu->hpp, 0, ',', '.') }}</td>
         <td>Rp {{ number_format($menu->margin, 0, ',', '.') }}</td>
+        <td>@if ($menu->status == 'aktif')
+            <span style="color: green;">Aktif</span>
+            @else
+            <span style="color: red;">Nonaktif</span>
+            @endif
+        </td>
 
         <td>
+            <form action="/manajer/menu/{{ $menu->id }}/status" method="POST" style="display: inline;">
+                @csrf
+                @method('PUT')
+
+                <button type="submit">
+                    {{ $menu->status == 'aktif' ? 'Nonaktifkan' : 'Aktifkan' }}
+                </button>
+            </form>
+
             <a href="/manajer/menu/{{ $menu->id }}/edit">
                 <button>Edit</button>
             </a>
