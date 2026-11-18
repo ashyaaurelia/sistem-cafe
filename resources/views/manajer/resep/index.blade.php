@@ -32,6 +32,10 @@
         <td>{{ $resep->jumlah }}</td>
         <td>{{ $resep->bahan->satuan }}</td>
         <td>
+            <a href="/manajer/resep/{{ $resep->id }}/edit">
+                <button type="button">Edit</button>
+            </a>
+        
             <form action="/manajer/resep/{{ $resep->id }}" method="POST">
                 @csrf
                 @method('DELETE')

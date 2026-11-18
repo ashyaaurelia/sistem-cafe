@@ -67,9 +67,23 @@ class MenuController extends Controller
     {
         $menu = Menu::findOrFail($id);
 
-        if($menu->status == 'aktif'){
+        if ($menu->status == 'aktif') {
             $menu->status = 'nonaktif';
         } else {
+            $reseps = $menu->reseps()->with('bahan')->get();
+
+            if ($reseps->isEmpty()) {
+                return redirect('/manajer/menu')
+                    ->with('error', 'Menu belum memiliki resep!');
+            }
+
+            foreach ($reseps as $resep) {
+                if ($resep->bahan->stok < $resep->jumlah) {
+                    return redirect('/manajer/menu')
+                        ->with('error', 'Stok bahan ' . $resep->bahan->nama . ' tidak mencukupi!');
+                }
+            }
+
             $menu->status = 'aktif';
         }
 

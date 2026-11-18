@@ -67,17 +67,30 @@ class ResepController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Resep $resep)
+    public function edit($id)
     {
-        //
+        $resep = Resep::findOrFail($id);
+        $bahans= Bahan::all();
+
+        return view('manajer.resep.edit', compact('resep', 'bahans'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Resep $resep)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'bahan_id' => 'required|exists:bahans,id',
+            'jumlah' => 'required|numeric|min:0.01',
+        ]);
+
+        $resep = Resep::findOrFail($id);
+        $resep->update([
+            'bahan_id' => $request->bahan_id,
+            'jumlah' => $request->jumlah,
+        ]);
+        return redirect('/manajer/resep');
     }
 
     /**

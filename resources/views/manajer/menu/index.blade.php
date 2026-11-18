@@ -2,6 +2,12 @@
 
 @section('content')
 
+@if (session('error'))
+<div style="color: red; margin-bottom: 15px;">
+    {{ session('error') }}
+</div>
+@endif
+
 <h1>Daftar Menu</h1>
 
 <a href="/manajer/menu/tambah">

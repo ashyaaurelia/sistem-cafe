@@ -83,6 +83,10 @@ Route::get('/manajer/resep/{menu_id}/create', [ResepController::class, 'create']
 
 Route::post('/manajer/resep', [ResepController::class, 'store']);
 
+Route::get('/manajer/resep/{id}/edit', [ResepController::class, 'edit']);
+
+Route::put('/manajer/resep/{id}', [ResepController::class, 'update']);
+
 Route::delete('manajer/resep/{id}', [ResepController::class, 'destroy']);
 
 Route::post('/manajer/bahan/sinkronisasi', [BahanController::class, 'sinkronisasi']);
