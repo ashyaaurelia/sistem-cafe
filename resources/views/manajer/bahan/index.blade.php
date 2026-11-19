@@ -3,6 +3,31 @@
 @section('content')
 
 <h1>Daftar Bahan</h1>
+<h2>Daftar Bahan Menipis</h2>
+
+@if($bahansMenipis->count() > 0)
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>Nama Bahan</th>
+            <th>Stok Saat Ini</th>
+            <th>Stok Minimum</th>
+            <th>Satuan</th>
+        </tr>
+
+        @foreach($bahansMenipis as $bahan)
+            <tr>
+                <td>{{ $bahan->nama }}</td>
+                <td>{{ $bahan->stok }}</td>
+                <td>{{ $bahan->stok_minimum }}</td>
+                <td>{{ $bahan->satuan }}</td>
+            </tr>
+        @endforeach
+    </table>
+@else
+    <p>Tidak ada bahan yang menipis</p>
+@endif
+
+<br>
 
 <a href="/manajer/bahan/tambah">
     <button>+ Tambah Bahan</button>

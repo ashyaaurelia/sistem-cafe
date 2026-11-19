@@ -12,7 +12,9 @@ class BahanController extends Controller
     public function index()
     {
         $bahans = Bahan::all();
-        return view ('manajer.bahan.index', compact('bahans'));
+        $bahansMenipis = Bahan::whereRaw(
+            'CAST(stok AS DECIMAL(12,2)) <= CAST(stok_minimum AS DECIMAL(12,2))')->get();
+            return view('manajer.bahan.index', compact('bahans', 'bahansMenipis'));
     }
 
     // menampilkan form tambah bahan
