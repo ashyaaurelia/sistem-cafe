@@ -18,7 +18,24 @@ class TransaksiController extends Controller
     }
 
     public function create(){
-        $menus = \App\Models\Menu::where('status', 'aktif')->orderBy('nama')->get();
+        $menus = Menu::where('status', 'aktif')->orderBy('nama')->get();
+
+        foreach ($menus as $menu){
+            $reseps = Resep::where('menu_id', $menu->id)->get();
+            $bisaDipesan = $reseps->isNotEmpty();
+            $kelompokResep = $reseps->groupBy('bahan_id');
+
+        foreach ($kelompokResep as $bahanId => $daftarResep){
+            $bahan = Bahan::find($bahanId);
+            $kebutuhan = $daftarResep->sum('jumlah');
+
+            if(!$bahan || $bahan->stok < $kebutuhan){
+                $bisaDipesan = false;
+                break;
+            }
+        }
+        $menu->bisa_dipesan = $bisaDipesan;
+        }
         return view('kasir.transaksi.create', compact('menus'));
     }
 
@@ -57,6 +74,10 @@ class TransaksiController extends Controller
 
             if (!$menu) {
                 return back()->with('error', 'Menu tidak ditemukan!');
+            }
+
+            if(!Resep::where('menu_id', $menu->id)->exists()){
+                return back()->with('error', 'Menu ' . $menu->nama . ' belum memiliki resep');
             }
 
             $harga = $menu->harga;

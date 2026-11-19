@@ -99,13 +99,19 @@
                     Rp {{ number_format($menu->harga, 0, ',', '.') }}
                 </p>
 
-                <button type="button" class="btn-tambah"
-                    data-id="{{ $menu->id }}"
-                    data-nama="{{ $menu->nama }}"
-                    data-harga="{{ $menu->harga }}">
-                    + Tambah
-                </button>
-
+                @if ($menu->bisa_dipesan)
+                    <button type="button" class="btn-tambah"
+                        data-id="{{ $menu->id }}"
+                        data-nama="{{ $menu->nama }}"
+                        data-harga="{{ $menu->harga }}">
+                        + Tambah
+                    </button>
+                @else
+                    <button type="button" disabled
+                        style="background: #ccc; color: #666; border: none; padding: 9px 15px; border-radius: 5px; cursor: not-allowed; margin-top: 10px;">
+                        Habis
+                    </button>
+                @endif
             </div>
 
         @endforeach
