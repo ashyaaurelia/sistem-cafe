@@ -24,6 +24,12 @@ class BahanController extends Controller
     // menyimpan bahan
     public function store(Request $request)
     {
+        $request->validate([
+            'nama' => 'required|string|unique:bahans,nama',
+            'stok' => 'required|numeric|min:0',
+            'satuan' => 'required|in:g,ml,pcs',
+        ]);
+
         Bahan::create([
             'nama' => $request->nama,
             'stok' => $request->stok,

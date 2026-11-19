@@ -28,9 +28,9 @@
     <label>Satuan</label>
     <br>
     <select name="satuan">
-        <option value="gram" {{ $bahan->satuan == 'gram' ? 'selected' : '' }}>Gram</option>
-        <option value="ml" {{ $bahan->satuan == 'ml' ? 'selected' : '' }}>ML</option>
-        <option value="pcs" {{ $bahan->satuan == 'pcs' ? 'selected' : '' }}>PCS</option>
+        <option value="g" {{ $bahan->satuan == 'g' ? 'selected' : '' }}>Gram (g)</option>
+        <option value="ml" {{ $bahan->satuan == 'ml' ? 'selected' : '' }}>Mililiter (ml)</option>
+        <option value="pcs" {{ $bahan->satuan == 'pcs' ? 'selected' : '' }}>Pieces (pcs)</option>
     </select>
 
     <br><br>

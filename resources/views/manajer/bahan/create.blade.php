@@ -27,9 +27,9 @@
     <label>Satuan</label>
     <br>
     <select name="satuan">
-        <option value="gram">Gram</option>
-        <option value="value">ML</option>
-        <option value="pcs">PCS</option>
+        <option value="gram">Gram (g)</option>
+        <option value="value">Mililiter (ml)</option>
+        <option value="pcs">Pieces (pcs)</option>
     </select>
 
     <br><br>
