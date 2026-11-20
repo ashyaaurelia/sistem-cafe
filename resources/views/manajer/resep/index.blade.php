@@ -1,8 +1,28 @@
 @extends('layouts.app')
-
 @section('content')
 
+@if ($errors->any())
+    @foreach ($errors->all() as $error)
+    <p style="color: red;">{{ $error }}</p>
+    @endforeach
+@endif
+
+@if (session('success'))
+    <p style="color: green;">
+        {{ session('success') }}
+    </p>
+@endif
+
 <h1>Resep Menu</h1>
+
+<h2>Import Resep dari CSV</h2>
+<form action ="/manajer/resep/import" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="file" name="file" accept=".csv" required>
+    <button type="submit">Import Resep</button>
+</form>
+
+<br>
 
 @foreach ($menus as $menu)
 

@@ -77,6 +77,7 @@ Route::middleware('role:manajer')->group(function () {
     Route::get('/manajer/resep/{id}/edit', [ResepController::class, 'edit']);
     Route::put('/manajer/resep/{id}', [ResepController::class, 'update']);
     Route::delete('/manajer/resep/{id}', [ResepController::class, 'destroy']);
+    Route::post('/manajer/resep/import', [ResepController::class, 'import']);
 
     // stok masuk
     Route::get('/manajer/stok-masuk', [StokMasukController::class, 'index']);

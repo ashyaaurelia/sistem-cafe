@@ -92,7 +92,7 @@ class BahanController extends Controller
         $dilewati = 0;
 
         while (($data = fgetcsv($file)) !== false){
-            if (count($data) < 5){
+            if (count($data) < 4){
                 $dilewati++;
                 continue;
             }
@@ -108,12 +108,18 @@ class BahanController extends Controller
             }
             $stok = (float) $stokRaw;
 
-            if ($satuan == 'kg'){
+            if (in_array($satuan, ['kg', 'kilogram', 'kilograms'])) {
                 $stok = $stok * 1000;
                 $satuan = 'g';
-            } elseif ($satuan == 'liter'){
+            } elseif (in_array($satuan, ['gram', 'gr', 'grams'])) {
+                $satuan = 'g';
+            } elseif (in_array($satuan, ['liter', 'litre', 'l'])) {
                 $stok = $stok * 1000;
                 $satuan = 'ml';
+            } elseif (in_array($satuan, ['mililiter', 'milliliter', 'millilitre'])){
+                $satuan = 'ml';
+            } elseif (in_array($satuan, ['pieces', 'piece', 'buah', 'pcs'])) {
+                $satuan = 'pcs';
             }
 
             if (!in_array($satuan, ['g', 'ml', 'pcs'])){
@@ -130,6 +136,10 @@ class BahanController extends Controller
 
             $bahan->stok = $stok;
             $bahan->satuan = $satuan;
+
+            if ($bahan->stok_minimum === null){
+                $bahan->stok_minimum = 0;
+            }
             $bahan->save();
 
             $berhasil++;

@@ -103,4 +103,94 @@ class ResepController extends Controller
         $resep->delete();
         return redirect('/manajer/resep');
     }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt|max:2048',
+        ]);
+
+        $file = fopen($request->file('file')->getRealPath(), 'r');
+        $header = fgetcsv($file);
+
+        $berhasil = 0;
+        $dilewati = 0;
+
+        while (($data = fgetcsv($file)) !== false){
+            if (count($data) < 4){
+                $dilewati++;
+                continue;
+            }
+
+            $kodeMenu = trim($data[0]);
+            $namaBahan = trim($data[1]);
+            $takaran = trim($data[2]);
+            $satuan = strtolower(trim($data[3]));
+
+            $menu = Menu::where('kode', $kodeMenu)->first();
+
+            if(!$menu || !is_numeric($takaran) || $takaran <= 0){
+                $dilewati++;
+                continue;
+            }
+
+            $namaCari = strtolower(trim(preg_replace('/\s+/', ' ', $namaBahan)));
+            $daftarBahan = Bahan::where('satuan', $satuan)->get();
+
+            $bahan = $daftarBahan->first(function ($item) use ($namaCari) {
+                $namaDatabase = strtolower(trim(preg_replace('/\s+/', ' ', $item->nama)));
+
+                return $namaDatabase == $namaCari;
+            });
+
+            if (!$bahan){
+                $kandidat = [];
+
+                foreach ($daftarBahan as $item){
+                    $namaDatabase = strtolower(trim(preg_replace('/\s+/', ' ', $item->nama)));
+                    $jarak = levenshtein($namaCari, $namaDatabase);
+                    $batas = max(1, floor(strlen($namaCari) * 0.2));
+
+                    if ($jarak <= $batas){
+                        $kandidat[] = [
+                            'bahan' => $item,
+                            'jarak' => $jarak,
+                        ];
+                    }
+                }
+                usort($kandidat, fn($a, $b) => $a['jarak'] <=> $b['jarak']);
+
+                if (count($kandidat) == 1 ||
+                    (count($kandidat) > 1 && $kandidat[0]['jarak'] < $kandidat[1]['jarak'])){
+                    $bahan = $kandidat[0]['bahan'];
+                }
+            }
+
+            if(!$bahan){
+                $dilewati++;
+                continue;
+            }
+            $resep = Resep::where('menu_id', $menu->id)
+                ->where('bahan_id', $bahan->id)
+                ->first();
+
+            if ($resep){
+                $dilewati++;
+                continue;
+            }
+
+            Resep::create([
+                'menu_id' => $menu->id,
+                'bahan_id' => $bahan->id,
+                'jumlah' => $takaran,
+            ]);
+
+            $berhasil++;
+        }
+        fclose($file);
+
+        return redirect('/manajer/resep')->with(
+            'success', "Import selesai. Berhasil: $berhasil resep. Dilewati: $dilewati data."
+        );
+    }
 }
