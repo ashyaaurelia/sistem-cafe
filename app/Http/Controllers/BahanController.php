@@ -31,6 +31,8 @@ class BahanController extends Controller
             'nama' => 'required|string|unique:bahans,nama',
             'stok' => 'required|numeric|min:0',
             'satuan' => 'required|in:g,ml,pcs',
+            'stok_minimum' => 'required|numeric|min:0',
+            'harga' => 'required|numeric|min:0',
         ]);
 
         Bahan::create([
@@ -40,7 +42,7 @@ class BahanController extends Controller
             'stok_minimum' => $request->stok_minimum,
             'harga' => $request->harga,
         ]);
-        $menuAvailability_>sync();
+        $menuAvailability->sync();
 
         return redirect('/manajer/bahan');
     }

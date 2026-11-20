@@ -22,6 +22,7 @@ class ResepController extends Controller
             foreach ($menu->reseps as $resep){
                 $menu->hpp += $resep->jumlah * $resep->bahan->harga;
             }
+            $menu->margin = $menu->harga - $menu->hpp;
         }
         return view ('manajer.resep.index', compact('menus'));
     }

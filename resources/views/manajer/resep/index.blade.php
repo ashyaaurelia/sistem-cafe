@@ -9,7 +9,15 @@
 <h3>{{ $menu->nama }}</h3>
 
 <p>
-    <strong>HPP: Rp {{ number_format($menu->hpp, 0, ',', '.') }}</strong>
+    Harga Jual: Rp {{ number_format($menu->harga, 0, ',', '.') }}
+</p>
+
+<p>
+    HPP: Rp {{ number_format($menu->hpp, 0, ',', '.') }}
+</p>
+
+<p>
+    <strong>Margin: Rp {{ number_format($menu->margin, 0, ',', '.') }}</strong>
 </p>
 
 <a href="/manajer/resep/{{ $menu->id }}/create">
