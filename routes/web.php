@@ -8,6 +8,7 @@ use App\Http\Controllers\ResepController;
 use App\Http\Controllers\StokMasukController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\ResetPasswordPelangganController;
+use App\Http\Controllers\LaporanController;
 
 // halaman utama
 Route::get('/', function () {
@@ -82,6 +83,11 @@ Route::middleware('role:manajer')->group(function () {
     Route::post('/manajer/stok-masuk', [StokMasukController::class, 'simpan']);
     Route::get('/manajer/laporan/stok-masuk', [StokMasukController::class, 'laporan']);
 
+    // route laporan
+    Route::middleware('role:manajer')->group(function () {
+        // laporan
+        Route::get('/manajer/laporan', [LaporanController::class, 'index']);
+    });
 });
 
 // route kasir

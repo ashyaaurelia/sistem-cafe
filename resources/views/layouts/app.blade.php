@@ -91,7 +91,7 @@
         <a href="/manajer/resep">Resep</a>
         <a href="/manajer/bahan">Bahan</a>
         <a href="/manajer/stok-masuk">Stok Masuk</a>
-        <a href="/manajer/laporan/stok-masuk">Laporan</a>
+        <a href="/manajer/laporan">Laporan</a>
     </div>
 
     <div class="content">

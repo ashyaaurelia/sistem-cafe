@@ -9,7 +9,7 @@
     .tabel-menu{
         width: 100%;
         border-collapse: collapse;
-        backgrpund: white;
+        background: white;
     }
 
     .tabel-menu th,
