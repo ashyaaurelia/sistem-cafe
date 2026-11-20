@@ -85,6 +85,9 @@ class TransaksiController extends Controller
             $totalItem = $harga * $jumlah;
 
             $subtotal += $totalItem;
+            $biayaLayanan = $subtotal * 0.05;
+            $pajak = ($subtotal + $biayaLayanan) * 0.10;
+            $total = $subtotal + $biayaLayanan + $pajak;
 
             $detailPesanan[] = [
                 'menu_id' => $menu->id,
@@ -96,15 +99,15 @@ class TransaksiController extends Controller
         }
 
         try{
-        $transaksi = DB::transaction(function () use ($request, $detailPesanan, $subtotal) {
+        $transaksi = DB::transaction(function () use ($request, $detailPesanan, $subtotal, $biayaLayanan, $pajak, $total) {
 
             $transaksi = Transaksi::create([
                 'nomor_transaksi' => 'TRX-' . now()->format('YmdHis') . '-' . random_int(100, 999),
                 'tanggal' => now(),
                 'subtotal' => $subtotal,
-                'biaya_layanan' => 0,
-                'pajak' => 0,
-                'total' => $subtotal,
+                'biaya_layanan' => $biayaLayanan,
+                'pajak' => $pajak,
+                'total' => $total,
                 'metode_pembayaran' => $request->metode_pembayaran,
                 'status' => 'baru',
             ]);

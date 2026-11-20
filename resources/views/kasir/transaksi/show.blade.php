@@ -1,4 +1,3 @@
-
 @extends('layouts.kasir')
 @section('content')
 
@@ -137,9 +136,29 @@
         </tbody>
     </table>
 
-    <h3 class="kanan">
-        Total: Rp {{ number_format($transaksi->total, 0, ',', '.') }}
-    </h3>
+    <div style="margin-top: 20px; text-align: right;">
+        <p>
+            Subtotal:
+            Rp {{ number_format($transaksi->subtotal, 0, ',', '.') }}
+        </p>
+
+        <p>
+            Service (5%):
+            Rp {{ number_format($transaksi->biaya_layanan, 0, ',', '.') }}
+        </p>
+
+        <p>
+            Pajak (10%):
+            Rp {{ number_format($transaksi->pajak, 0, ',', '.') }}
+        </p>
+
+        <hr>
+
+        <h3>
+            Total:
+            Rp {{ number_format($transaksi->total, 0, ',', '.') }}
+        </h3>
+    </div>
 
     <p>Terima kasih telah berbelanja!</p>
 
