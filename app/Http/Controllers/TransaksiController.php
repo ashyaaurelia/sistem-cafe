@@ -8,7 +8,7 @@ use App\Models\Menu;
 use Illuminate\Support\Facades\DB;
 use App\Models\Resep;
 use App\Models\Bahan;
-use App\Service\MenuAvailabilityService;
+use App\Services\MenuAvailabilityService;
 
 
 class TransaksiController extends Controller
@@ -151,12 +151,25 @@ class TransaksiController extends Controller
         return view('kasir.transaksi.show', compact('transaksi'));
     }
 
-    public function updateStatus(Request $request, $id){
+    public function updateStatus(Request $request, $id)
+    {
         $request->validate([
             'status' => 'required|in:baru,diproses,selesai',
         ]);
 
         $transaksi = Transaksi::findOrFail($id);
+        $urutanStatus = [
+            'baru' => 'diproses',
+            'diproses' => 'selesai',
+        ];
+
+        if(
+            !isset($urutanStatus[$transaksi->status]) ||
+            $request->status != $urutanStatus[$transaksi->status]
+        ){
+            return back()->with('error', 'Urutan status pesanan tidak valid');
+        }
+
         $transaksi->update([
             'status' => $request->status,
         ]);
