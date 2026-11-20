@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\StokMasuk;
 use App\Models\Bahan;
-Use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
+use App\Services\MenuAvailabilityService;
 
 class StokMasukController extends Controller
 {
@@ -15,7 +16,7 @@ class StokMasukController extends Controller
         return view('manajer.stok-masuk.index', compact('bahans'));
     }
 
-    public function simpan(Request $request)
+    public function simpan(Request $request, MenuAvailabilityService $menuAvailability)
     {
         $request->validate([
             'tanggal' => 'required|date',
@@ -34,6 +35,7 @@ class StokMasukController extends Controller
             $bahan->stok += $request->jumlah;
             $bahan->save();
         });
+        $menuAvailability->sync();
 
         return redirect('/manajer/stok-masuk')->with('success', 'Stok masuk berhasil disimpan');
     }

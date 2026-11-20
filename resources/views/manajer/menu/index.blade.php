@@ -38,9 +38,11 @@
         <td>Rp {{ number_format($menu->hpp, 0, ',', '.') }}</td>
         <td>Rp {{ number_format($menu->margin, 0, ',', '.') }}</td>
         <td>@if ($menu->status == 'aktif')
-            <span style="color: green;">Aktif</span>
+                <span style="color: green;">Aktif</span>
+            @elseif ($menu->status == 'habis')
+                <span style="color: red;">Habis</span>
             @else
-            <span style="color: red;">Nonaktif</span>
+                <span style="color:red;">Nonaktif</span>
             @endif
         </td>
 
@@ -50,7 +52,7 @@
                 @method('PUT')
 
                 <button type="submit">
-                    {{ $menu->status == 'aktif' ? 'Nonaktifkan' : 'Aktifkan' }}
+                    {{ $menu->status == 'nonaktif' ? 'Aktifkan' : 'Nonaktifkan' }}
                 </button>
             </form>
 

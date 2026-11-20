@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bahan;
 use Illuminate\Http\Request;
 use App\Services\UkkApiServices;
+use App\Services\MenuAvailabilityService;
 
 class BahanController extends Controller
 {
@@ -24,7 +25,7 @@ class BahanController extends Controller
     }
 
     // menyimpan bahan
-    public function store(Request $request)
+    public function store(Request $request, MenuAvailabilityService $menuAvailability)
     {
         $request->validate([
             'nama' => 'required|string|unique:bahans,nama',
@@ -39,6 +40,8 @@ class BahanController extends Controller
             'stok_minimum' => $request->stok_minimum,
             'harga' => $request->harga,
         ]);
+        $menuAvailability_>sync();
+
         return redirect('/manajer/bahan');
     }
 
@@ -50,7 +53,7 @@ class BahanController extends Controller
     }
 
     // mengupdate bahan
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, MenuAvailabilityService $menuAvailability)
     {
         $bahan = Bahan::findOrFail($id);
 
@@ -61,6 +64,7 @@ class BahanController extends Controller
             'stok_minimum' => $request->stok_minimum,
             'harga' => $request->harga,
         ]);
+        $menuAvailability->sync();
 
         return redirect('/manajer/bahan');
     }
@@ -73,7 +77,7 @@ class BahanController extends Controller
         return redirect('/manajer/bahan');
     }
 
-    public function import(Request $request)
+    public function import(Request $request, MenuAvailabilityService $menuAvailability)
     {
         $request->validate([
             'file' => 'required|mimes:csv,txt|max:2048',
@@ -128,6 +132,7 @@ class BahanController extends Controller
 
             $berhasil++;
         }
+        $menuAvailability->sync();
 
         fclose($file);
         return redirect('/manajer/bahan')->with(

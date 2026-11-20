@@ -8,6 +8,7 @@ use App\Models\Menu;
 use Illuminate\Support\Facades\DB;
 use App\Models\Resep;
 use App\Models\Bahan;
+use App\Service\MenuAvailabilityService;
 
 
 class TransaksiController extends Controller
@@ -18,7 +19,7 @@ class TransaksiController extends Controller
     }
 
     public function create(){
-        $menus = Menu::where('status', 'aktif')->orderBy('nama')->get();
+        $menus = Menu::whereIn('status', ['aktif', 'habis'])->orderBy('nama')->get();
 
         foreach ($menus as $menu){
             $reseps = Resep::where('menu_id', $menu->id)->get();
@@ -40,7 +41,7 @@ class TransaksiController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(Request $request, MenuAvailabilityService $menuAvailability)
     {
         $request->validate([
             'pesanan' => 'required|string',
@@ -134,6 +135,7 @@ class TransaksiController extends Controller
 
             return $transaksi;
         });
+            $menuAvailability->sync();
 
             return redirect('/kasir/transaksi/' . $transaksi->id);
 
@@ -162,7 +164,7 @@ class TransaksiController extends Controller
         return back()->with('success', 'Status pesanan berhasil diubah');
     }
 
-    public function batal($id)
+    public function batal($id, MenuAvailabilityService $menuAvailability)
 {
     $transaksi = Transaksi::with('detailTransaksis')->findOrFail($id);
 
@@ -192,6 +194,7 @@ class TransaksiController extends Controller
             'status' => 'dibatalkan',
         ]);
     });
+    $menuAvailability->sync();
 
     return back()->with('success', 'Pesanan berhasil dibatalkan dan stok dikembalikan!');
 }
