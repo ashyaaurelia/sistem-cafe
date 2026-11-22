@@ -27,7 +27,8 @@ class ResetPasswordPelangganController extends Controller
             ->findOrFail($id);
 
         $pelanggan->update([
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
+            'wajib_ganti_password' => true,
         ]);
 
         return back()->with('success', 'Password pelanggan berhasil direset!');
